@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MySpot.Api.Commands;
+using MySpot.Api.Entities;
 using MySpot.Api.Models;
 using MySpot.Api.Services;
 namespace MySpot.Api.Controllers
@@ -11,10 +13,10 @@ namespace MySpot.Api.Controllers
         private readonly ReservationsService _service = new();
 
         [HttpGet]
-        public ActionResult<IEnumerable<Reservation>> Get() => Ok(_service.GetAll());
+        public ActionResult<IEnumerable<ReservationDto>> Get() => Ok(_service.GetAllWeekly());
 
-        [HttpGet("{id:int}")]
-        public ActionResult<Reservation> Get(int id)
+        [HttpGet("{id:Guid}")]
+        public ActionResult<ReservationDto> Get(Guid id)
         {
             var reservation = _service.Get(id);
             if(reservation is null)
@@ -23,26 +25,30 @@ namespace MySpot.Api.Controllers
         } 
         
         [HttpPost]
-        public ActionResult Post(Reservation reservation)
+        public ActionResult Post(CreateReservation command)
         {
-            var id = _service.Create(reservation);
+            var id = _service.Create(command with {ReservationId = Guid.NewGuid()});
             if(id is null)            
                 return BadRequest();
-            return CreatedAtAction(nameof(Get), new { id = reservation.Id }, null);
+            return CreatedAtAction(nameof(Get), new {id}, null);
         }
 
-        [HttpPut("{id:int}")]
-        public ActionResult Put(int id, Reservation reservation)
+        [HttpPut("{id:Guid}")]
+        public ActionResult Put(Guid id, ChangeReservationLicensePlate command)
         {
-            if(!_service.Update(id,reservation))            
+            if(!_service.Update(command with {ReservationId = id}))
+            {
                 return NotFound();
+            }       
             return NoContent();
         }
 
-        [HttpDelete("{id:int}")]
-        public ActionResult Delete(int id){
-            if(!_service.Delete(id))            
+        [HttpDelete("{id:Guid}")]
+        public ActionResult Delete(Guid id){
+            if(!_service.Delete(new DeleteReservation(id)))
+            {
                 return NotFound();
+            }
             return NoContent();
         }
     }

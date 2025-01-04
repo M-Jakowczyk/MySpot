@@ -24,11 +24,11 @@ namespace MySpot.Api.Entities
                 Name = name;
         }
 
-        public void AddReservation(Reservation reservation)
+        public void AddReservation(Reservation reservation, DateTime now)
         {
             var isInvalidDate = reservation.Date.Date < From ||
                                 reservation.Date.Date > To ||
-                                reservation.Date.Date < DateTime.UtcNow.Date;
+                                reservation.Date.Date < now;
             if(isInvalidDate)
             {
                 throw new InvalidReservationDateException(reservation.Date);
@@ -46,6 +46,6 @@ namespace MySpot.Api.Entities
         }
 
         public void RemoveReservation(Reservation reservation) 
-            => _reservations.Where(x => x.Id == reservation.Id);
+            => _reservations.RemoveWhere(x => x.Id == reservation.Id);
     }
 }

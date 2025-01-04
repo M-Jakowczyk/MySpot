@@ -1,16 +1,17 @@
 ﻿using MySpot.Api.Exceptions;
+using MySpot.Api.ValueObjects;
 
 namespace MySpot.Api.Models
 {
     public class Reservation : ICloneable
     {
-        public Guid Id { get; }
-        public Guid ParkingSpotId { get; }
-        public string EmployeeName { get; private set; }
-        public string LicensePlate { get; private set; }
-        public DateTime Date { get; private set; }
+        public ReservationId Id { get; }
+        public ParkingSpotId ParkingSpotId { get; }
+        public EmployeeName EmployeeName { get; private set; }
+        public LicensePlate LicensePlate { get; private set; }
+        public Date Date { get; private set; }
 
-        public Reservation(Guid id, Guid parkingSpotId, DateTime date, string employeeName, string licensePlate)
+        public Reservation(ReservationId id, ParkingSpotId parkingSpotId, Date date, EmployeeName employeeName, LicensePlate licensePlate)
         {
             Id = id;
             ParkingSpotId = parkingSpotId;
@@ -19,14 +20,8 @@ namespace MySpot.Api.Models
             Date = date;
         }
 
-        public void ChangeLicensePlate(string licensePlate)
-        {
-            if(string.IsNullOrWhiteSpace(licensePlate)) 
-            {
-                throw new EmptyLicensePlateException();
-            }
-            LicensePlate = licensePlate;
-        }
+        public void ChangeLicensePlate(LicensePlate licensePlate)
+            => LicensePlate = licensePlate;
        
         public object Clone()
         {

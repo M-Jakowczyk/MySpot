@@ -13,7 +13,7 @@ namespace MySpot.Api.Controllers
     public class ReservationsController : ControllerBase
     {
         private static readonly Clock _clock = new();
-        private readonly ReservationsService _service = new(new List<WeeklyParkingSpot>()
+        private static readonly ReservationsService _service = new(new List<WeeklyParkingSpot>()
         {
             new WeeklyParkingSpot(Guid.Parse("00000000-0000-0000-0000-000000000001"), new Week(_clock.Current()), "P1"),
             new WeeklyParkingSpot(Guid.Parse("00000000-0000-0000-0000-000000000002"), new Week(_clock.Current()), "P2"),

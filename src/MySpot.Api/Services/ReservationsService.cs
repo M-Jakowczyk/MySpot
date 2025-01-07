@@ -11,6 +11,7 @@ namespace MySpot.Api.Services
 {
     public class ReservationsService
     {
+        private static readonly Clock _clock = new();
         private readonly List<WeeklyParkingSpot> _weeklyParkingSpots;
        
         public ReservationsService(List<WeeklyParkingSpot> weeklyParkingSpot)
@@ -32,14 +33,15 @@ namespace MySpot.Api.Services
                 });
 
         public Guid? Create(CreateReservation command){
-            var weeklyParkingSpot = _weeklyParkingSpots.SingleOrDefault(x => x.Id.Equals(command.ParkingSpotId));
-            if (weeklyParkingSpot == null)
+            var parkingSpotId = new ParkingSpotId(command.ParkingSpotId);
+            var weeklyParkingSpot = _weeklyParkingSpots.SingleOrDefault(x => x.Id == parkingSpotId);
+            if (weeklyParkingSpot is null)
             {
                 return default;
             }
             var reservation = new Reservation(command.ReservationId, command.ParkingSpotId, 
-                (DateTimeOffset)command.Date, command.EmployeeName, command.LicensePlate);
-            weeklyParkingSpot.AddReservation(reservation, Date.Now);
+                new Date(command.Date), command.EmployeeName, command.LicensePlate);
+            weeklyParkingSpot.AddReservation(reservation, new Date(_clock.Current()));
             return reservation.Id;
         }
 
@@ -55,7 +57,7 @@ namespace MySpot.Api.Services
                 return false;
             }
 
-            if(existingReservation.Date <= Date.Now)
+            if(existingReservation.Date <= new Date(_clock.Current()))
             {
                 return false;
             }

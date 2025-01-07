@@ -12,8 +12,9 @@ public class ReservationServiceTests
     public void given_reservation_for_not_taken_date_create_reservation_should_succeed()
     {
         var weeklyParkingSpot = _weeklyParkingSpots.First();
-        var command = new CreateReservation(weeklyParkingSpot.Id,
-            Guid.NewGuid(), DateTime.UtcNow.AddMinutes(5), "John Doe", "XYZ123");
+        var command = new CreateReservation(Guid.NewGuid(), weeklyParkingSpot.Id,
+            DateTime.UtcNow.AddMinutes(5), "John Doe", "XYZ123");
+        
         var reservationId = _reservationService.Create(command);
 
         reservationId.ShouldNotBeNull();

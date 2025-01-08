@@ -2,25 +2,23 @@
 using MySpot.Api.Commands;
 using MySpot.Api.Entities;
 using MySpot.Api.Models;
+using MySpot.Api.Repositories;
 using MySpot.Api.Services;
 using MySpot.Api.ValueObjects;
 
 namespace MySpot.Api.Controllers
 {
-    //[Route("reservsations")]
+    //[Route("reservations")]
     [Route("[controller]")]
     [ApiController]
     public class ReservationsController : ControllerBase
     {
-        private static readonly Clock _clock = new();
-        private static readonly ReservationsService _service = new(new List<WeeklyParkingSpot>()
+        private readonly IReservationService _service;
+
+        public ReservationsController(IReservationService service)
         {
-            new WeeklyParkingSpot(Guid.Parse("00000000-0000-0000-0000-000000000001"), new Week(_clock.Current()), "P1"),
-            new WeeklyParkingSpot(Guid.Parse("00000000-0000-0000-0000-000000000002"), new Week(_clock.Current()), "P2"),
-            new WeeklyParkingSpot(Guid.Parse("00000000-0000-0000-0000-000000000003"), new Week(_clock.Current()), "P3"),
-            new WeeklyParkingSpot(Guid.Parse("00000000-0000-0000-0000-000000000004"), new Week(_clock.Current()), "P4"),
-            new WeeklyParkingSpot(Guid.Parse("00000000-0000-0000-0000-000000000005"), new Week(_clock.Current()), "P5")
-        });
+            _service = service;
+        }
 
         [HttpGet]
         public ActionResult<IEnumerable<ReservationDto>> Get() => Ok(_service.GetAllWeekly());

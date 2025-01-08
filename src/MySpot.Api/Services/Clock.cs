@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace MySpot.Api.Services
 {
-    public class Clock
+    public class Clock : IClock
     {
-        public DateTimeOffset Current() => DateTimeOffset.Now;
+        public DateTime Current() => DateTime.Now;
     }
 }

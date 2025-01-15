@@ -1,7 +1,6 @@
-﻿using MySpot.Api.Entities;
-using MySpot.Api.Exceptions;
-using MySpot.Api.Models;
-using MySpot.Api.ValueObjects;
+﻿using MySpot.Core.Entities;
+using MySpot.Core.Exceptions;
+using MySpot.Core.ValueObjects;
 using Shouldly;
 
 namespace MySpot.Tests.Unit.Entities
@@ -24,7 +23,7 @@ namespace MySpot.Tests.Unit.Entities
             exception.ShouldNotBeNull();                                     // Assert.NotNull(exception);
             exception.ShouldBeOfType<InvalidReservationDateException>();     // Assert.IsType<InvalidReservationDateException>(exception);
         }
-        
+
         [Fact]
         public void given_reservation_for_already_existing_date_add_reservation_should_throw_exception()
         {
@@ -33,11 +32,11 @@ namespace MySpot.Tests.Unit.Entities
             _weeklyParkingSpot.AddReservation(reservation, _now);
 
             var exception = Record.Exception(() => _weeklyParkingSpot.AddReservation(reservation, reservationDate));
-            
+
             exception.ShouldNotBeNull();
             exception.ShouldBeOfType<ParkingSpotAlreadyReservedException>();
         }
-        
+
         [Fact]
         public void given_reservation_for_not_taken_date_add_reservation_should_throw_exception()
         {
@@ -52,10 +51,10 @@ namespace MySpot.Tests.Unit.Entities
 
         private readonly Date _now;
         private readonly WeeklyParkingSpot _weeklyParkingSpot;
-        
+
         public WeeklyParkingSpotTests()
         {
-            _now = new Date(new DateTime(2025,01,06));
+            _now = new Date(new DateTime(2025, 01, 06));
             _weeklyParkingSpot = new WeeklyParkingSpot(Guid.NewGuid(), new Week(_now), "P1");
         }
 

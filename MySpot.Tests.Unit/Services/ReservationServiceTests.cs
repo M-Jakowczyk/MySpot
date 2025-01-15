@@ -1,8 +1,7 @@
-using MySpot.Api.Commands;
-using MySpot.Api.Entities;
-using MySpot.Api.Repositories;
-using MySpot.Api.Services;
-using MySpot.Api.ValueObjects;
+using MySpot.Application.Commands;
+using MySpot.Application.Services;
+using MySpot.Core.Repositories;
+using MySpot.Infrastructure.Repositories;
 using MySpot.Tests.Unit.Shared;
 using Shouldly;
 
@@ -15,8 +14,8 @@ public class ReservationServiceTests
     {
         var weeklyParkingSpot = _weeklyParkingSpotRepository.GetAll().First();
         var command = new CreateReservation(Guid.NewGuid(), weeklyParkingSpot.Id,
-            DateTime.UtcNow.AddMinutes(5), "John Doe", "XYZ123");
-        
+            _clock.Current().AddMinutes(5), "John Doe", "XYZ123");
+
         var reservationId = _reservationService.Create(command);
 
         reservationId.ShouldNotBeNull();

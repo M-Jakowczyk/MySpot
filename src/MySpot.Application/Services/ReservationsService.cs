@@ -41,6 +41,8 @@ namespace MySpot.Application.Services
             var reservation = new Reservation(command.ReservationId, command.ParkingSpotId,
                 new Date(command.Date), command.EmployeeName, command.LicensePlate);
             weeklyParkingSpot.AddReservation(reservation, new Date(_clock.Current()));
+            _weeklyParkingSpotRepository.Update(weeklyParkingSpot);
+
             return reservation.Id;
         }
 
@@ -51,19 +53,21 @@ namespace MySpot.Application.Services
             {
                 return false;
             }
-
-            var existingReservation = weeklyParkingSpot.Reservations.SingleOrDefault(x => x.Id.Equals(command.ReservationId));
+            var reservationId = new ReservationId(command.ReservationId);
+            var existingReservation = weeklyParkingSpot.Reservations.SingleOrDefault(x => x.Id == reservationId);
             if (existingReservation is null)
             {
                 return false;
             }
 
-            if (existingReservation.Date <= new Date(_clock.Current()))
-            {
-                return false;
-            }
+            //if (existingReservation.Date <= new Date(_clock.Current()))
+            //{
+            //    return false;
+            //}
 
             existingReservation.ChangeLicensePlate(command.LicensePlate);
+            _weeklyParkingSpotRepository.Update(weeklyParkingSpot);
+
             return true;
         }
 
@@ -80,10 +84,12 @@ namespace MySpot.Application.Services
                 return false;
             }
             weeklyParkingSpot.RemoveReservation(existingReservation);
+            _weeklyParkingSpotRepository.Delete(weeklyParkingSpot);
+
             return true;
         }
 
         private WeeklyParkingSpot GetWeeklyParkingSpotByReservation(Guid reservationId)
-            => _weeklyParkingSpotRepository.GetAll().SingleOrDefault(x => x.Reservations.Any(y => y.Id.Equals(reservationId)));
+            => _weeklyParkingSpotRepository.GetAll().SingleOrDefault(x => x.Reservations.Any(y => y.Id == new ReservationId(reservationId)));
     }
 }

@@ -6,10 +6,10 @@ using MySpot.Core.Exceptions;
 
 namespace MySpot.Core.ValueObjects
 {
-    public sealed record ReservationId
+    public sealed record ParkingSpotId
     {
-        Guid Value { get; }
-        public ReservationId(Guid value)
+        public Guid Value { get; }
+        public ParkingSpotId(Guid value)
         {
             if (value == Guid.Empty)
             {
@@ -17,7 +17,7 @@ namespace MySpot.Core.ValueObjects
             }
             Value = value;
         }
-        public static implicit operator ReservationId(Guid value) => new(value);
-        public static implicit operator Guid(ReservationId data) => data.Value;
+        public static implicit operator ParkingSpotId(Guid value) => new(value);
+        public static implicit operator Guid(ParkingSpotId data) => data.Value;
     }
 }

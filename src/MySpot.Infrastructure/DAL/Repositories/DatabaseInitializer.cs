@@ -5,7 +5,7 @@ using MySpot.Core.Entities;
 using MySpot.Core.ValueObjects;
 using MySpot.Infrastructure.Time;
 
-namespace MySpot.Infrastructure.DAL
+namespace MySpot.Infrastructure.DAL.Repositories
 {
     internal sealed class DatabaseInitializer : IHostedService
     {

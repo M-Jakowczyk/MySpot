@@ -18,44 +18,45 @@ namespace MySpot.Api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<ReservationDto>> Get() => Ok(_service.GetAllWeekly());
+        public async Task<ActionResult<IEnumerable<ReservationDto>>> Get()
+            => Ok(await _service.GetAllWeeklyAsync());
 
         [HttpGet("{id:Guid}")]
-        public ActionResult<ReservationDto> Get(Guid id)
+        public async Task<ActionResult<ReservationDto>> Get(Guid id)
         {
-            var reservation = _service.Get(id);
+            var reservation = await _service.GetAsync(id);
             if (reservation is null)
                 return NotFound();
             return Ok(reservation);
         }
 
         [HttpPost]
-        public ActionResult Post(CreateReservation command)
+        public async Task<ActionResult> Post(CreateReservation command)
         {
-            var id = _service.Create(command with { ReservationId = Guid.NewGuid() });
+            var id = await _service.CreateAsync(command with { ReservationId = Guid.NewGuid() });
             if (id is null)
                 return BadRequest();
             return CreatedAtAction(nameof(Get), new { id }, null);
         }
 
         [HttpPut("{id:Guid}")]
-        public ActionResult Put(Guid id, ChangeReservationLicensePlate command)
+        public async Task<ActionResult> Put(Guid id, ChangeReservationLicensePlate command)
         {
-            if (!_service.Update(command with { ReservationId = id }))
+            if (await _service.UpdateAsync(command with { ReservationId = id }))
             {
-                return NotFound();
+                return NoContent();
             }
-            return NoContent();
+            return NotFound();
         }
 
         [HttpDelete("{id:Guid}")]
-        public ActionResult Delete(Guid id)
+        public async Task<ActionResult> Delete(Guid id)
         {
-            if (!_service.Delete(new DeleteReservation(id)))
+            if (await _service.DeleteAsync(new DeleteReservation(id)))
             {
-                return NotFound();
+                return NoContent();
             }
-            return NoContent();
+            return NotFound();
         }
     }
 }

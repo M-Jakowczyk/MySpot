@@ -12,10 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddApplication()
     .AddCore()
-    .AddInfrastrucure(builder.Configuration)
+    .AddInfrastructure(builder.Configuration)
     .AddControllers();
 
 var app = builder.Build();
+app.UseInfrastructure();
 app.MapControllers();
 
 

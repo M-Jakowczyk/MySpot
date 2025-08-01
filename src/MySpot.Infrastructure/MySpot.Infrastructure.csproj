@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Humanizer" Version="3.0.0-beta.96" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.2" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.2" />

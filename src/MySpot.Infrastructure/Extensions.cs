@@ -6,6 +6,7 @@ using MySpot.Infrastructure.DAL.Repositories;
 using MySpot.Infrastructure.Time;
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Builder;
+using MySpot.Core.Abstractions;
 using MySpot.Infrastructure.Exceptions;
 
 namespace MySpot.Infrastructure

@@ -41,5 +41,8 @@ namespace MySpot.Core.Entities
 
         public void RemoveReservation(Reservation reservation) 
             => _reservations.RemoveWhere(x => x.Id == reservation.Id);
+        
+        public void RemoveReservations(IEnumerable<Reservation> reservations) 
+            => _reservations.RemoveWhere(x => reservations.Any(r => r.Id == x.Id));
     }
 }

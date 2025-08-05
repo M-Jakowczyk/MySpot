@@ -17,7 +17,7 @@ namespace MySpot.Infrastructure
         {
             services
                 .AddPostgres(configuration)
-                //.AddSingleton<IWeeklyParkingSpotRepository, InMemoryWeeklyParkingSpotRepository>()
+                // .AddSingleton<IWeeklyParkingSpotRepository, PostgresWeeklyParkingSpotRepository>()
                 .AddSingleton<IClock, Clock>()
                 .AddSingleton<ExceptionMiddleware>();
             return services;

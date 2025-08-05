@@ -14,7 +14,7 @@ namespace MySpot.Tests.Unit.Entities
         {
             // ARRANGE
             var invalidDate = DateTime.Parse(dateString);
-            var reservation = new Reservation(Guid.NewGuid(), _weeklyParkingSpot.Id, new Date(invalidDate), "John Doe", "XYZ123");
+            var reservation = new VehicleReservation(Guid.NewGuid(), _weeklyParkingSpot.Id, "John Doe", "XYZ123", new Date(invalidDate));
 
             // ACT
             var exception = Record.Exception(() => _weeklyParkingSpot.AddReservation(reservation, new Date(_now)));
@@ -28,7 +28,7 @@ namespace MySpot.Tests.Unit.Entities
         public void given_reservation_for_already_existing_date_add_reservation_should_throw_exception()
         {
             var reservationDate = _now.AddDays(1);
-            var reservation = new Reservation(Guid.NewGuid(), _weeklyParkingSpot.Id, reservationDate, "John Doe", "XYZ123");
+            var reservation = new VehicleReservation(Guid.NewGuid(), _weeklyParkingSpot.Id, "John Doe", "XYZ123", reservationDate);
             _weeklyParkingSpot.AddReservation(reservation, _now);
 
             var exception = Record.Exception(() => _weeklyParkingSpot.AddReservation(reservation, reservationDate));
@@ -41,7 +41,7 @@ namespace MySpot.Tests.Unit.Entities
         public void given_reservation_for_not_taken_date_add_reservation_should_throw_exception()
         {
             var reservationDate = _now.AddDays(1);
-            var reservation = new Reservation(Guid.NewGuid(), _weeklyParkingSpot.Id, reservationDate, "John Doe", "XYZ123");
+            var reservation = new VehicleReservation(Guid.NewGuid(), _weeklyParkingSpot.Id,"John Doe", "XYZ123", reservationDate);
             _weeklyParkingSpot.AddReservation(reservation, _now);
 
             _weeklyParkingSpot.Reservations.ShouldHaveSingleItem();

@@ -6,5 +6,6 @@ namespace MySpot.Core.DomainServices;
 public interface IParkingReservationService
 {
     void ReservationSpotForVehicle(IEnumerable<WeeklyParkingSpot> allParkingSpots, JobTitle jobTitle,
-        WeeklyParkingSpot parkingSpotToReserve, Reservation reservation);
+        WeeklyParkingSpot parkingSpotToReserve, VehicleReservation reservation);
+    void ReservationParkingForCleaning(IEnumerable<WeeklyParkingSpot> allParkingSpots, Date date);
 }

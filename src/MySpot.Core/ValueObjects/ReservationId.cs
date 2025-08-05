@@ -19,5 +19,7 @@ namespace MySpot.Core.ValueObjects
         }
         public static implicit operator ReservationId(Guid value) => new(value);
         public static implicit operator Guid(ReservationId data) => data.Value;
+        
+        public static ReservationId Create() => new(Guid.NewGuid());
     }
 }

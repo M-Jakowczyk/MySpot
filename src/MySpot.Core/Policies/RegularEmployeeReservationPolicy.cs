@@ -18,8 +18,9 @@ public class RegularEmployeeReservationPolicy : IReservationPolicy
     {
         var totalEmployeeReservations = allParkingSpots
             .SelectMany(x => x.Reservations)
+            .OfType<VehicleReservation>()
             .Count(x => x.EmployeeName == employeeName);
 
-        return totalEmployeeReservations < 2 && _clock.Current().Hour < 4;
+        return totalEmployeeReservations < 2 && _clock.Current().Hour > 4;
     }
 }

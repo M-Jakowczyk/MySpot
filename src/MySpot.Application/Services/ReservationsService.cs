@@ -53,7 +53,7 @@ namespace MySpot.Application.Services
                 return default;
             }
             var reservation = new VehicleReservation(command.ReservationId, command.ParkingSpotId,
-                command.EmployeeName, command.LicensePlate, new Date(command.Date));
+                command.EmployeeName, command.Capacity, command.LicensePlate, new Date(command.Date));
             _parkingReservationService.ReservationSpotForVehicle(weeklyParkingSpots, JobTitle.Employee, parkingSpotToReserve,
                 reservation);
             await _weeklyParkingSpotRepository.UpdateAsync(parkingSpotToReserve);

@@ -17,6 +17,9 @@ namespace MySpot.Infrastructure.DAL.Configuration
                 .HasConversion(x => x.Value, x => new ParkingSpotId(x));
             builder.Property(x => x.Date)
                 .HasConversion(x => x.Value, x => new Date(x));
+            builder.Property(x => x.Capacity)
+                .IsRequired()
+                .HasConversion(x => x.Value, x => new Capacity(x));
             builder
                 .HasDiscriminator<string>("Type")
                 .HasValue<VehicleReservation>(nameof(VehicleReservation))
